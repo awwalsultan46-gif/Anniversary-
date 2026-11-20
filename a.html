@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Mommy 🕷️🎀</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffe6ea 0%, #ffc2d1 40%, #e8d5ff 100%);
+    font-family: 'Poppins', 'Arial', sans-serif;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+
+  /* Music Button */
+  .music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .music-btn:hover { transform: scale(1.1); }
+  .music-btn.playing {
+    background: #d4af37;
+    color: #fff;
+    animation: pulseMusic 1.5s infinite;
+  }
+  @keyframes pulseMusic {
+    0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+  }
+
+  /* Falling Petals */
+  .petal {
+    position: fixed;
+    width: 15px;
+    height: 15px;
+    background: #ffb3c6;
+    border-radius: 15px 0 15px 0;
+    opacity: 0.7;
+    animation: fall linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    box-shadow: 0 0 5px rgba(255, 179, 198, 0.5);
+  }
+  @keyframes fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Envelope Section */
+  .envelope-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    animation: popIn 1.2s cubic-bezier(.2,1.4,.5,1) both;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .envelope-wrap.hide {
+    opacity: 0;
+    transform: scale(.8) translateY(-40px);
+    pointer-events: none;
+  }
+
+  @keyframes popIn {
+    0%   { transform: scale(0.6) translateY(40px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .envelope {
+    position: relative;
+    width: min(320px, 85vw);
+    height: 210px;
+    background: #fff0f3;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(255, 105, 160, .4), 
+                inset 0 0 20px rgba(255, 194, 216, 0.5);
+    border: 2px solid #ffb3c6;
+    transition: transform .4s cubic-bezier(.2,1.4,.5,1), box-shadow .4s ease;
+  }
+  .envelope-wrap:hover .envelope {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 30px 60px rgba(255, 105, 160, .6);
+  }
+
+  .flap {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to bottom, #ffb3c6, #ff8fab);
+    clip-path: polygon(0 0, 50% 55%, 100% 0);
+    border-radius: 12px 12px 0 0;
+    transform-origin: top center;
+    transition: transform .8s cubic-bezier(.4,0,.2,1);
+    z-index: 3;
+    box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
+  }
+
+  .wax-seal {
+    position: absolute;
+    top: 44%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px; height: 50px;
+    background: radial-gradient(circle, #d4af37 0%, #b8860b 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+    z-index: 4;
+    box-shadow: 0 6px 15px rgba(184, 134, 11, 0.6), inset 0 2px 5px rgba(255,255,255,0.5);
+    animation: pulseSeal 2s ease-in-out infinite;
+  }
+  @keyframes pulseSeal {
+    0%,100% { transform: translate(-50%,-50%) scale(1); box-shadow: 0 6px 15px rgba(184, 134, 11, 0.6); }
+    50%     { transform: translate(-50%,-50%) scale(1.1); box-shadow: 0 8px 25px rgba(184, 134, 11, 0.9); }
+  }
+
+  /* Chibis */
+  .env-chibis {
+    position: absolute;
+    bottom: 15px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    gap: 35px;
+    z-index: 2;
+  }
+
+  .chibi { animation: bob 3s ease-in-out infinite; }
+  .chibi.kitty { animation-delay: 1s; }
+  @keyframes bob {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+  }
+
+  .spidey .head {
+    width: 40px; height: 37px;
+    background: #e23636;
+    border-radius: 50% 50% 45% 45%;
+    border: 2.5px solid #b71c1c;
+    position: relative;
+  }
+  .spidey .head::before, .spidey .head::after {
+    content: "";
+    position: absolute; top: 13px;
+    width: 12px; height: 8px;
+    background: #fff;
+    border: 1.5px solid #111;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+  .spidey .head::before { left: 3px; transform: rotate(-8deg); }
+  .spidey .head::after  { right: 3px; transform: rotate(8deg); }
+  .spidey .body {
+    width: 26px; height: 22px;
+    background: #e23636;
+    border-radius: 45% 45% 40% 40%;
+    margin: -3px auto 0;
+    border: 2.5px solid #b71c1c;
+    border-top: none;
+  }
+
+  .kitty .head {
+    width: 44px; height: 37px;
+    background: #fff;
+    border-radius: 50% 50% 46% 46%;
+    border: 2.5px solid #f7a8c4;
+    position: relative;
+  }
+  .kitty .ear {
+    position: absolute; top: -8px;
+    width: 13px; height: 13px;
+    background: #fff;
+    border: 2.5px solid #f7a8c4;
+    border-radius: 3px;
+    transform: rotate(45deg);
+  }
+  .kitty .ear.left  { left: 2px; }
+  .kitty .ear.right { right: 2px; }
+  .kitty .eye {
+    position: absolute; top: 15px;
+    width: 5px; height: 7px;
+    background: #222; border-radius: 50%;
+  }
+  .kitty .eye.left  { left: 10px; }
+  .kitty .eye.right { right: 10px; }
+  .kitty .nose {
+    position: absolute; top: 23px; left: 50%;
+    transform: translateX(-50%);
+    width: 7px; height: 5px;
+    background: #ffcc4d; border-radius: 50%;
+  }
+  .kitty .bow {
+    position: absolute; top: -3px; right: -7px;
+    width: 14px; height: 14px;
+    background: #ff5c8a;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: -7px 0 0 -1.5px #ff5c8a;
+  }
+  .kitty .body {
+    width: 28px; height: 20px;
+    background: #fff;
+    border: 2.5px solid #f7a8c4;
+    border-top: none;
+    border-radius: 40% 40% 45% 45%;
+    margin: -3px auto 0;
+  }
+
+  /* Hint Text */
+  .tap-hint {
+    color: #d4af37;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+    animation: pulseHint 2s ease-in-out infinite;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .tap-hint span {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff5c8a;
+    text-transform: none;
+    letter-spacing: 1px;
+    margin-top: 5px;
+  }
+  @keyframes pulseHint {
+    0%,100% { opacity: .6; transform: scale(1); }
+    50%     { opacity: 1;   transform: scale(1.05); }
+  }
+
+  /* Letter Card */
+  .card {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(.6) rotateX(20deg);
+    opacity: 0;
+    pointer-events: none;
+    width: min(600px, 94vw);
+    max-height: 92vh;
+    overflow-y: auto;
+    background: #fffcf9;
+    border-radius: 20px;
+    padding: 35px 30px;
+    box-shadow: 0 25px 60px rgba(255, 105, 160, 0.3),
+                0 0 0 4px #fff,
+                0 0 0 6px #d4af37;
+    z-index: 3;
+    transition: transform 1s cubic-bezier(.2,1,.3,1), opacity .8s ease;
+    perspective: 1000px;
+  }
+  .card.open {
+    transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .card::-webkit-scrollbar { width: 6px; }
+  .card::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 8px; }
+
+  .couple {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .couple .chibi .head { transform: scale(1.25); transform-origin: bottom center; }
+  .couple .chibi .body { transform: scale(1.25); transform-origin: top center; margin-top: 2px; }
+
+  .love-heart {
+    font-size: 24px;
+    margin-bottom: 22px;
+    animation: beat2 1.5s ease-in-out infinite;
+  }
+  @keyframes beat2 {
+    0%,100% { transform: scale(1); }
+    30%     { transform: scale(1.3); }
+    60%     { transform: scale(0.95); }
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #d4af37;
+    margin: 2px 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    font-family: 'Georgia', serif;
+    letter-spacing: 1px;
+  }
+  
+  .dates {
+    text-align: center;
+    color: #8aa0c8;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+  }
+
+  .letter p {
+    color: #4a4a4a;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    opacity: 0;
+    animation: fadeUp .8s ease forwards;
+  }
+  .letter p strong { color: #ff5c8a; }
+  .letter p em     { color: #d4af37; font-style: normal; font-weight: bold; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .sign {
+    text-align: right;
+    color: #ff5c8a;
+    font-size: 1.05rem;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
+  /* Photo Gallery */
+  .gallery-title {
+    text-align: center;
+    color: #d4af37;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 30px 0 15px;
+    font-family: 'Georgia', serif;
+  }
+
+  .gallery-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #f0e6d2;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+  }
+
+  .img-container {
+    width: 100%;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fafafa;
+    margin-bottom: 15px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+  }
+
+  .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .gallery-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .nav-btn {
+    background: transparent;
+    color: #d4af37;
+    border: 2px solid #d4af37;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-btn:hover {
+    background: #d4af37;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+  }
+  .nav-btn:active { transform: scale(0.95); }
+
+  .img-counter {
+    color: #8aa0c8;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  /* Sparkles */
+  .gold-sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px #d4af37;
+    animation: floatSparkle 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 4;
+  }
+  @keyframes floatSparkle {
+    0%,100% { transform: translateY(0) scale(0.5); opacity: 0; }
+    50% { transform: translateY(-20px) scale(1.5); opacity: 1; }
+  }
+
+  .confetti {
+    position: fixed;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 10;
+    transition: transform 1.5s cubic-bezier(.2,1,.3,1), opacity 1.5s ease;
+  }
+</style>
+</head>
+<body>
+
+<button class="music-btn" id="musicBtn" title="Play Music">🎵</button>
+<!-- I added ./ here to tell the browser to look in the current folder -->
+<audio id="bgMusic" loop>
+  <source src="./fallin-in-love.mp3" type="audio/mpeg">
+</audio>
+
+<div id="bg"></div>
+
+<div class="envelope-wrap" id="envelopeWrap">
+  <div class="envelope">
+    <div class="flap" id="flap"></div>
+    <div class="wax-seal">💌</div>
+    <div class="env-chibis">
+      <div class="chibi spidey">
+        <div class="head"></div>
+        <div class="body"></div>
+      </div>
+      <div class="chibi kitty">
+        <div class="head">
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="nose"></div>
+          <div class="bow"></div>
+        </div>
+        <div class="body"></div>
+      </div>
+    </div>
+  </div>
+  <div class="tap-hint">
+    Tap to open
+    <span>🎵 If music doesn't play, tap the 🎵 button on top! 🎵</span>
+  </div>
+</div>
+
+<div class="card" id="card">
+  <div class="gold-sparkle" style="top:10px; left:15px;"></div>
+  <div class="gold-sparkle" style="top:40px; right:20px; animation-delay:1.5s;"></div>
+  <div class="gold-sparkle" style="bottom:20px; left:30px; animation-delay:0.8s;"></div>
+  <div class="gold-sparkle" style="bottom:50px; right:15px; animation-delay:2.2s;"></div>
+  <div class="gold-sparkle" style="top:50%; left:10px; animation-delay:3s;"></div>
+
+  <div class="couple">
+    <div class="chibi spidey">
+      <div class="head"></div>
+      <div class="body"></div>
+    </div>
+    <div class="love-heart">💗</div>
+    <div class="chibi kitty">
+      <div class="head">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+        <div class="bow"></div>
+      </div>
+      <div class="body"></div>
+    </div>
+  </div>
+
+  <h1>Happy Anniversary, Mommy!</h1>
+  <div class="dates">December 07, 2025 💗 December 07, 2026</div>
+
+  <div class="letter" id="letterBody">
+    <p>Hello po, <strong>Happy anniversary po saten</strong>, alam ko po na matagal na nating inaantay to pero ito na ung time. <strong>ANG SAYA SAYA</strong> pag naiisip ko na itong araw nato ay darating tas ma eenjoy ko pa kasama ka. Oo maraming araw na nag aaway tayo pero wala lang yon, pag dating saten marupok us eh. And also sorry sa mga nagawa kong mali ngayon year nato, siguro parang living hell pag kasama mo ako HAHAHAHAHAHAH. <em>I still can't believe we've made it this far, and I'm so grateful for every single moment with you.</em></p>
+
+    <p>Ulit, Happy Anniversary saten! Alam kong di to sapat, eh unti lang, mas prefer mo yata na gift eh, sorry di mangyayari yon HAHAHAHAH. Alam mo ba na ang ganda ganda ng araw ko pag kasama kita, like wooahh apaka ganda tlga, nakakarefresh sa utak pag nakikita ko ung mga ngiti mo HAHAHAHA ang cute kasii, sarap pisilin ung pisnge eh. <em>You honestly have the most beautiful smile in the world, and it never fails to make my day.</em> Everything you have is so perfect, lovey. Di ko alam kung pano ko ieexplain kasi sobrang hirap iexplain eh. <em>I love you more than words can say, and my world is so much brighter just because you're in it.</em> Alam mo ba na di ko kaya mabuhay ng wala NYAHAHAHAHAHHA, ewan, pero pag naiisip ko yon ang hirap tlga tanggapin eh. So please stay with me forever NYAHAHAHAHA.</p>
+
+    <p>If you ever leave po, please don't forget to eat on time kasi kakaltukan kita pag di ka kumakain on time. Tas alagaan ung sarili mo ng mabuti ah, basta lagi karing mag iingat, pabaya ka panaman, pero sana wag naman HWAHAHHAHAHAA. <em>Thank you for being my peace, my happiness, and my forever. I promise to keep choosing you, no matter what.</em></p>
+
+    <p style="text-align:center; font-weight:bold; color:#d4af37; font-size:1.1rem; letter-spacing:1px; margin-top: 25px;">To many more years of love, laughter, and forever with you.</p>
+
+    <p style="text-align:center; font-weight:bold; color:#d4af37; font-size:1.1rem; letter-spacing:1px;"> HAPPY ANNIVERSARY PO 💗</p>
+
+    <p class="sign">- Your Lovey NYAK 🕷️🎀</p>
+  </div>
+
+  <div class="gallery-title">Our Memories</div>
+  <div class="gallery-box">
+    <div class="img-container">
+      <!-- Added ./ and onerror alert -->
+      <img id="galleryImage" src="./1.jpg" alt="Our Memory" onerror="console.log('Image 1 not found! Check if the file is in the same folder.');">
+    </div>
+    <div class="gallery-controls">
+      <button class="nav-btn" id="prevBtn">Prev</button>
+      <div class="img-counter" id="imgCounter">1 / 31</div>
+      <button class="nav-btn" id="nextBtn">Next</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Falling Petals Background
+  const bg = document.getElementById('bg');
+  for (let i = 0; i < 30; i++) {
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (6 + Math.random() * 6) + 's';
+    el.style.animationDelay = (Math.random() * 5) + 's';
+    const scale = 0.5 + Math.random();
+    el.style.transform = `scale(${scale})`;
+    bg.appendChild(el);
+  }
+
+  // Music Logic
+  const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  let isPlaying = false;
+
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPlaying) {
+      bgMusic.pause();
+      musicBtn.classList.remove('playing');
+      musicBtn.textContent = '🎵';
+    } else {
+      // Play and catch any errors (like missing file)
+      bgMusic.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicBtn.textContent = '🎶';
+        isPlaying = true;
+      }).catch(err => {
+        console.log("Audio play failed:", err);
+        alert("Song not found! Make sure 'fallin-in-love.mp3' is in the same folder.");
+      });
+    }
+  });
+
+  const wrap   = document.getElementById('envelopeWrap');
+  const flap   = document.getElementById('flap');
+  const card   = document.getElementById('card');
+  const letter = document.getElementById('letterBody');
+  let opened = false;
+
+  // Confetti Burst
+  function burstConfetti(x, y) {
+    for (let i = 0; i < 30; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      const icons = ['✨', '🌟', '💖', '💍', '🌸', '🦋'];
+      c.textContent = icons[Math.floor(Math.random() * icons.length)];
+      c.style.left = x + 'px';
+      c.style.top  = y + 'px';
+      document.body.appendChild(c);
+      requestAnimationFrame(() => {
+        c.style.transform =
+          `translate(${(Math.random()-0.5)*500}px, ${-150 - Math.random()*300}px) rotate(${Math.random()*720}deg) scale(${0.5 + Math.random()})`;
+        c.style.opacity = '0';
+      });
+      setTimeout(() => c.remove(), 1800);
+    }
+  }
+
+  // Open Envelope
+  function openLetter() {
+    if (opened) return;
+    opened = true;
+
+    // Try to play music automatically on tap
+    if(!isPlaying) {
+      musicBtn.click();
+    }
+
+    flap.style.transform = 'rotateX(-180deg)';
+
+    const rect = wrap.getBoundingClientRect();
+    burstConfetti(rect.left + rect.width/2, rect.top + rect.height/2);
+
+    setTimeout(() => wrap.classList.add('hide'), 400);
+    setTimeout(() => {
+      card.classList.add('open');
+      const paras = letter.querySelectorAll('p');
+      paras.forEach((p, i) => {
+        p.style.animationDelay = (0.2 + i * 0.35) + 's';
+      });
+    }, 800);
+  }
+
+  wrap.addEventListener('click', openLetter);
+
+  // Click Sparkles
+  document.body.addEventListener('click', (e) => {
+    if (!opened) return;
+    if(e.target.closest('.nav-btn') || e.target.closest('.music-btn')) return;
+    
+    for (let i = 0; i < 5; i++) {
+      const h = document.createElement('div');
+      h.textContent = Math.random() > 0.5 ? '💖' : '✨';
+      h.style.position = 'fixed';
+      h.style.left = e.clientX + 'px';
+      h.style.top  = e.clientY + 'px';
+      h.style.fontSize = '18px';
+      h.style.pointerEvents = 'none';
+      h.style.transition = 'transform 1.2s cubic-bezier(.2,1,.3,1), opacity 1.2s ease';
+      h.style.zIndex = 20;
+      document.body.appendChild(h);
+      requestAnimationFrame(() => {
+        h.style.transform =
+          `translate(${(Math.random()-0.5)*200}px, ${-100 - Math.random()*150}px) rotate(${Math.random()*360}deg)`;
+        h.style.opacity = '0';
+      });
+      setTimeout(() => h.remove(), 1300);
+    }
+  });
+
+  // Photo Gallery Logic
+  let currentImg = 1;
+  const totalImgs = 31;
+  const imgElement = document.getElementById('galleryImage');
+  const imgCounter = document.getElementById('imgCounter');
+
+  function updateImage() {
+    imgElement.style.opacity = 0;
+    setTimeout(() => {
+      // Handle .jpg (1-20) and .jpeg (21-31) extensions
+      if (currentImg <= 20) {
+        imgElement.src = `./${currentImg}.jpg`;
+      } else {
+        imgElement.src = `./${currentImg}.jpeg`;
+      }
+      
+      imgCounter.textContent = `${currentImg} / ${totalImgs}`;
+      imgElement.onload = () => {
+        imgElement.style.opacity = 1;
+      };
+    }, 300);
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentImg = currentImg === totalImgs ? 1 : currentImg + 1;
+    updateImage();
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentImg = currentImg === 1 ? totalImgs : currentImg - 1;
+    updateImage();
+  });
+
+</script>
+</body>
+</html>
